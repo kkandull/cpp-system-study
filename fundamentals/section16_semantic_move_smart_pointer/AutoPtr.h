@@ -11,31 +11,65 @@ public:
 public: 
     AutoPtr(T *ptr = nullptr)
         :m_ptr(ptr)
-    {}
+    {
+        std::cout << "Autoptr default constructor" << "\n";
+    }
 
     ~AutoPtr()
     {
+        std::cout << "AutoPtr destructor" << "\n";
         if(m_ptr != nullptr) delete m_ptr;
     }
 
-    AutoPtr(AutoPtr & a)
+    /*AutoPtr(AutoPtr & a)
     {
-        m_ptr = a.m_ptr;
-        a.m_ptr = nullptr;
+        std::cout << "Autoptr copy constructor" << "\n";
+
+        // deep copy
+        m_ptr = new T;
+        *m_ptr = *a.m_ptr;
     }
 
-    AutoPtr & operator = (AutoPtr & a)
+    AutoPtr & operator = (const AutoPtr & a)
     {
+        std::cout << "AutoPtr copy assignment" << "\n";
         if(&a == this)
             return *this;
         
-        delete m_ptr;
-        m_ptr = a.m_ptr;
-        a.m_ptr = nullptr;
+        if (m_ptr != nullptr) delete m_ptr;
+
+        // deep copy
+        m_ptr = new T;
+        *m_ptr = *a.m_ptr;
+
         return *this;
-    }
+    }*/
 
     T& operator*() const { return *m_ptr; }
     T* operator->() const { return m_ptr; }
     bool isNull() const { return m_ptr==nullptr; }
+
+    AutoPtr(AutoPtr&& a)
+        :m_ptr(a.m_ptr)
+    {
+        a.m_ptr = nullptr;
+        std::cout << "AutoPtr move constructor" << "\n";
+    }
+
+    AutoPtr & operator = (AutoPtr && a)
+    {
+        std::cout << "AutoPtr move assignment" << "\n";
+
+        if(&a==this) // prevent self-assignment
+            return *this;
+
+        if(m_ptr != nullptr) delete m_ptr;
+
+        // shallow copy
+        m_ptr = a.m_ptr;
+        a.m_ptr = nullptr;
+
+        return *this;
+
+    }
 };

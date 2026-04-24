@@ -1,3 +1,5 @@
+// Section 15 - 15.1
+// Focus: Autoptr
 #include <iostream>
 #include "Resource.h"
 #include "AutoPtr.h"
@@ -30,7 +32,7 @@ int main()
         std::cout << res1.m_ptr << "\n";
         std::cout << res2.m_ptr << "\n";
 
-        res2 = res1; // move semantics
+        //res2 = res1; // move semantics
 
         std::cout << res1.m_ptr << "\n";
         std::cout << res2.m_ptr << "\n";
